@@ -1,0 +1,127 @@
+ <!DOCTYPE HTML>
+ <html lang=”pt-br”>
+ <head>
+ <style>
+#meuCanvas {
+    cursor:url(lapis.gif),crosshair;
+	border:solid;
+}
+#svg1{
+	position:absolute;
+	left:280px;
+	top:0px;
+}
+
+#svg2{
+	position:absolute;
+	left:10px;
+	top:210px;
+}
+ </style>
+ <meta charset=”UTF-8”>
+ <link rel=”stylesheet” type=”text/css” href=”estil.css”>
+ <title>Teste</title>
+ </head>
+ <body onload="inicializaCanvas()">
+ <canvas id="meuCanvas" width="275" height="200"></canvas>
+ <svg id="svg1" height="275">
+	<image xlink:href="lapis.gif" x="10" y="10" height="60" width="60" onclick="trocaFerramenta('lapis')" />
+	<image xlink:href="borracha.jpg" x="10" y="70" height="60" width="60" onclick="trocaFerramenta('borracha')" />
+	<image xlink:href="texto.jpg" x="10" y="140" height="60" width="60" onclick="trocaFerramenta('texto')" />
+	<image xlink:href="baldinho.jpg" x="10" y="210" height="60" width="60" onclick="trocaFerramenta('baldinho')" />
+</svg>
+ </br>
+<svg id="svg2">
+   <rect x="10" y="10" width="15" height="10" style="fill:rgb(0,0,255)" onclick="trocaCor('0,0,255')"/>
+   <rect x="30" y="10" width="15" height="10" style="fill:rgb(255,0,0)" onclick="trocaCor('255,0,0')"/>
+   <rect x="50" y="10" width="15" height="10" style="fill:rgb(255,255,0)" onclick="trocaCor('255,255,0')"/>
+   <rect x="70" y="10" width="15" height="10" style="fill:rgb(100,100,50)" onclick="trocaCor('100,100,50')"/>
+   <rect x="90" y="10" width="15" height="10" style="fill:rgb(255,0,255)" onclick="trocaCor('255,0,255')"/>
+   <rect x="110" y="10" width="15" height="10" style="fill:rgb(128,64,128)" onclick="trocaCor('128,64,128')"/>
+   <rect x="130" y="10" width="15" height="10" style="fill:rgb(0,255,0)" onclick="trocaCor('0,255,0')"/>
+   <rect x="150" y="10" width="15" height="10" style="fill:rgb(255,128,0)" onclick="trocaCor('255,128,0')"/>
+   <rect x="170" y="10" width="15" height="10" style="fill:black" onclick="trocaCor('0,0,0')"/>
+   <rect x="190" y="10" width="15" height="10" style="fill:rgb(128,128,128)" onclick="trocaCor('128,128,128')"/>
+   <rect x="210" y="10" width="15" height="10" style="fill:rgb(204,0,204)" onclick="trocaCor('204,0,204')"/>
+   <rect x="230" y="10" width="15" height="10" style="fill:rgb(0,0,128)" onclick="trocaCor('0,0,128')"/>
+   <rect x="250" y="10" width="15" height="10" style="fill:black" />
+   <rect x="251" y="11" width="13" height="8" style="fill:white" onclick="trocaCor('255,255,255')"/>
+   <rect x="10" y="30" width="256" height="2" style="fill:black" onclick="trocaEspessuraTraco(1)"/>
+   <rect x="10" y="40" width="256" height="4" style="fill:black" onclick="trocaEspessuraTraco(2)"/>
+   <rect x="10" y="50" width="256" height="6" style="fill:black" onclick="trocaEspessuraTraco(3)"/>
+   <rect x="10" y="60" width="256" height="8" style="fill:black" onclick="trocaEspessuraTraco(4)"/>
+   <rect x="10" y="70" width="256" height="10" style="fill:black" onclick="trocaEspessuraTraco(5)"/>
+</svg>
+</br>
+<output id="saida"></output>
+ <script>
+var variavelCanvas = document.getElementById('meuCanvas');	
+var contexto = variavelCanvas.getContext('2d');
+var clicado = false;
+var ferramenta = "lapis";
+var tamanhoBorracha = 10;
+var corSelecionada = "0,0,0";
+
+variavelCanvas.addEventListener('mousemove',mouseEmCima,false);
+variavelCanvas.addEventListener('mousedown',mouseClicado,false);
+variavelCanvas.addEventListener('mouseup',mouseDesclicado,false);
+
+function inicializaCanvas(){
+	var dados = contexto.getImageData(0,0,variavelCanvas.width, variavelCanvas.height);
+	for(var i=0; i<dados.data.lenght; i+=4){
+		dados.data[i] = 255;
+		dados.data[i+1] = 255;
+		dados.data[i+2] = 255;
+	}
+}
+
+function mouseEmCima(event){
+	if(clicado && ferramenta == "lapis"){
+		contexto.lineTo(event.clientX - 10, event.clientY - 10);
+		contexto.stroke();		
+	}
+	else if(clicado && ferramenta == "borracha"){
+		contexto.clearRect(event.clientX - 15, event.clientY - 15, tamanhoBorracha, tamanhoBorracha);
+	}
+}
+
+function mouseClicado(event){
+	if(ferramenta == 'texto'){
+		var x = prompt('digite algo');
+		contexto.fillStyle = 'rgb('+corSelecionada+')';
+		contexto.font = "16pt sans-serif";
+		contexto.fillText(x, event.clientX, event.clientY);
+	}
+	else if(ferramenta == 'baldinho'){	
+		baldinho(event.clientX-10, event.clientY-10);	
+	}
+	else{
+		contexto.beginPath();
+		contexto.moveTo(event.clientX-10, event.clientY-10);
+		clicado = true;	
+	}
+}
+
+function mouseDesclicado(event){
+	clicado = false;	
+	contexto.closePath();
+}
+
+function trocaCor(cor){	
+
+}
+
+function trocaEspessuraTraco(tamanho){
+	
+}
+
+function trocaFerramenta(f){	
+	
+}
+
+function baldinho(x, y){
+
+}
+</script>
+ </body>
+ </html>
